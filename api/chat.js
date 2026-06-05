@@ -12,9 +12,10 @@ export default async function handler(req, res) {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": k,
-        "anthropic-version": "2023-06-01"
+        "anthropic-version": "2023-06-01",
+        "anthropic-beta": "web-search-2025-03-05"
       },
-      body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 1000, system, messages })
+      body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 1000, system, messages, tools: [{ type: "web_search_20250305", name: "web_search" }] })
     });
     const data = await response.json();
     if (!response.ok) return res.status(200).json({ reply: "API Error: " + JSON.stringify(data.error) });
