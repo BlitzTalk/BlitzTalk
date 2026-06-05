@@ -16,9 +16,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system, messages })
     });
     const data = await response.json();
+    if (!response.ok) {
+      return res.status(200).json({ reply: "API Error: " + JSON.stringify(data.error) });
+    }
     const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("") || "No response.";
     return res.status(200).json({ reply: text });
   } catch (err) {
-    return res.status(500).json({ error: "Server error." });
+    return res.status(200).json({ reply: "Catch error: " + err.message });
   }
 }
