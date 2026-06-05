@@ -11,10 +11,9 @@ export default async function handler(req, res) {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": "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",
-        "anthropic-version": "2023-06-01",
-        "anthropic-beta": "web-search-2025-03-05"
+        "anthropic-version": "2023-06-01"
       },
-      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system, messages, tools: [{ type: "web_search_20250305", name: "web_search" }] })
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system, messages })
     });
     const data = await response.json();
     const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("") || "No response.";
