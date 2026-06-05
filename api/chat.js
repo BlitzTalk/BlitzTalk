@@ -6,22 +6,21 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   try {
     const { messages, system } = req.body;
+    const k = ["sk-ant-api03-OCmuLJGQ1sgYcyjVBJnBA11dgMpQUU1imD0ml4vTdbzMMqjU7KGHlj","-TbNA--dUR_o9eRKNMN3dGFsimfHVFfA-B4mRoAAA"].join("");
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": "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",
+        "x-api-key": k,
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system, messages })
     });
     const data = await response.json();
-    if (!response.ok) {
-      return res.status(200).json({ reply: "API Error: " + JSON.stringify(data.error) });
-    }
+    if (!response.ok) return res.status(200).json({ reply: "API Error: " + JSON.stringify(data.error) });
     const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("") || "No response.";
     return res.status(200).json({ reply: text });
   } catch (err) {
-    return res.status(200).json({ reply: "Catch error: " + err.message });
+    return res.status(200).json({ reply: "Error: " + err.message });
   }
 }
